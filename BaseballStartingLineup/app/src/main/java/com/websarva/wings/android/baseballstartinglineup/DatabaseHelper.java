@@ -12,7 +12,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     //コンストラクタ
-    public DatabaseHelper(Context context){
+    public DatabaseHelper(Class<DatabaseUsing> context){
         //親クラスのコンストラクタ
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
     }
