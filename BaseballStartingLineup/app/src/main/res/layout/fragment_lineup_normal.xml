@@ -328,7 +328,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="-5dp">
+        android:layout_marginTop="-5dp"
+        android:layout_marginBottom="35dp">
 
         <Button
             android:id="@+id/btn9"
@@ -352,44 +353,6 @@
 
         <TextView
             android:id="@+id/name9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/unselected"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="-5dp"
-        android:layout_marginBottom="35dp">
-
-        <Button
-            android:id="@+id/btnP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onClick9"
-            android:text="P"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/positionP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
-            android:text="(P)"
-            android:textColor="?attr/colorAccent"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/nameP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
