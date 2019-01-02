@@ -31,4 +31,5 @@
     <string name="subOrder">NO-DH</string>
     <string name="field">Field</string>
     <string name="back">Back</string>
+    <string name="cancel">CANCEL</string>
 </resources>
