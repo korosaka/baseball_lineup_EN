@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     int numbers[] = new int[20];
     //グローバル変数i（データベースへの登録・検索で使う）
     int i = 0;
-    //サブオーダー選択時に+10される
+    //DH無し選択時に+10される
     int k = 0;
     //各打順の名前
     TextView name1;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     TextView name7;
     TextView name8;
     TextView name9;
+    TextView nameP;
     //スピナーオブジェクト
     Spinner spinner;
     //クリアボタン（現在上部に入力中のものを未入力状態に戻す（選択打順も））
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     TextView position7;
     TextView position8;
     TextView position9;
+    TextView positionP;
     //各打順の名前,ポジション用配列
     String[] names;
     String[] positions;
@@ -78,24 +80,28 @@ public class MainActivity extends AppCompatActivity {
         record = findViewById(R.id.record);
         clear = findViewById(R.id.clear);
         title = findViewById(R.id.title);
-        name1 = findViewById(R.id.name1);
-        name2 = findViewById(R.id.name2);
-        name3 = findViewById(R.id.name3);
-        name4 = findViewById(R.id.name4);
-        name5 = findViewById(R.id.name5);
-        name6 = findViewById(R.id.name6);
-        name7 = findViewById(R.id.name7);
-        name8 = findViewById(R.id.name8);
-        name9 = findViewById(R.id.name9);
-        position1 = findViewById(R.id.position1);
-        position2 = findViewById(R.id.position2);
-        position3 = findViewById(R.id.position3);
-        position4 = findViewById(R.id.position4);
-        position5 = findViewById(R.id.position5);
-        position6 = findViewById(R.id.position6);
-        position7 = findViewById(R.id.position7);
-        position8 = findViewById(R.id.position8);
-        position9 = findViewById(R.id.position9);
+
+
+        name1 = findViewById(R.id.name1DH);
+        name2 = findViewById(R.id.name2DH);
+        name3 = findViewById(R.id.name3DH);
+        name4 = findViewById(R.id.name4DH);
+        name5 = findViewById(R.id.name5DH);
+        name6 = findViewById(R.id.name6DH);
+        name7 = findViewById(R.id.name7DH);
+        name8 = findViewById(R.id.name8DH);
+        name9 = findViewById(R.id.name9DH);
+        nameP = findViewById(R.id.nameP);
+        position1 = findViewById(R.id.position1DH);
+        position2 = findViewById(R.id.position2DH);
+        position3 = findViewById(R.id.position3DH);
+        position4 = findViewById(R.id.position4DH);
+        position5 = findViewById(R.id.position5DH);
+        position6 = findViewById(R.id.position6DH);
+        position7 = findViewById(R.id.position7DH);
+        position8 = findViewById(R.id.position8DH);
+        position9 = findViewById(R.id.position9DH);
+        positionP = findViewById(R.id.positionP);
         //打順配列に打順番号入れる(1~19番)
         for(int i = 1;i < 20;i++){
             numbers[i] = i;
@@ -106,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
         etName.setEnabled(false);
 
 //        TODO データベースから引っ張ってきて表示するメソッドorないなら空情報を配列に入れる
+
+
     }
 
     //以下１〜９番の打順ボタン処理⬇
@@ -138,9 +146,8 @@ public class MainActivity extends AppCompatActivity {
     }
     //打順ボタン共通メソッド（打順・登録状態表示、EditText・登録/クリアボタンの有効化、データベース用の数字登録）
     public void commonMethod(int j){
-        //numbersは表示打順のためkを反映させない
-        String number = String.valueOf(j);
-        tvSelectNum.setText(number);
+        //　表示打順のためkを反映させない
+        tvSelectNum.setText(String.valueOf(j));
         //下記メソッド使用
         setSpinner(spinner,positions[j + k]);
         etName.setText(names[j + k]);
@@ -150,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         etName.setEnabled(true);
         record.setEnabled(true);
         clear.setEnabled(true);
+
         i = j;
     }
     //文字列からスピナーをセットするメソッド（上記メソッドで使用）
