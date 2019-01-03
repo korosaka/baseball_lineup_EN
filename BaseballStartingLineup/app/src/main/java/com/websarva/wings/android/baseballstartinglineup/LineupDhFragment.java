@@ -98,9 +98,6 @@ public class LineupDhFragment extends Fragment {
 
     public void setInfo(String[] names,String[] positions ){
 
-
-
-
         // レイアウトに表示
         name1.setText(names[1]);
         name2.setText(names[2]);
@@ -124,5 +121,7 @@ public class LineupDhFragment extends Fragment {
         position1.setText(positions[9]);
 
     }
+
+    public void textChange(String position,String name){}
 
 }

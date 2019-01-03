@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //テーブルの作成は最初の一度きり
         //一度テーブルを作るとその名前のテーブルは最初の形で残り、カラムの名前などを上書きするとエラーになる！
         //だからテーブルの内容変えたら、テーブルの名前を変えるorアプリを消去等して、別のテーブルとして作り直す！！
-        String sql = "CREATE TABLE lineup(_id INTEGER PRIMARY KEY, number INTEGER, playername TEXT,position TEXT);";
+        String sql = "CREATE TABLE lineup(_id INTEGER PRIMARY KEY, number INTEGER, playerName TEXT,position TEXT);";
         //実行
         db.execSQL(sql);
     }

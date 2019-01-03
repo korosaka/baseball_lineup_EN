@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     EditText etName;
     //登録ボタン
     Button record;
+    //キャンセルボタン
+    Button cansel;
     //スタメンタイトル
     TextView title;
     //各打順の数字配列
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public static String[] names = new String[20];
     public static String[] positions = new String[20];
 
+    private DatabaseUsing databaseUsing;
+
     View view;
 
     @Override
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         record = findViewById(R.id.record);
         clear = findViewById(R.id.clear);
         title = findViewById(R.id.title);
+        cansel = findViewById(R.id.cancel);
 
 
         //打順配列に打順番号入れる(1~19番)
@@ -61,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         etName.setEnabled(false);
 
 //        TODO データベースから引っ張ってきて表示するメソッドorないなら空情報を配列に入れる
-        DatabaseUsing databaseUsing = new DatabaseUsing(this);
+        databaseUsing = new DatabaseUsing(this);
         databaseUsing.getPlayersInfo(k);
 
         // fragment作成
@@ -75,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.show(dhFragment);
         transaction.hide(normalFragment);
         transaction.commit();
-
-
 
     }
 
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         etName.setEnabled(true);
         record.setEnabled(true);
         clear.setEnabled(true);
+        cansel.setEnabled(true);
 
         i = j;
     }
@@ -135,6 +139,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         spinner.setSelection(index);
+    }
+
+    // 登録ボタンクリック
+    public void onClickSave(View view){
+        //入力文字列取得
+        String playerName = etName.getText().toString();
+        if(playerName.equals("")){
+            playerName = "-----";
+        }
+        //ポジション取得
+        String position = (String) spinner.getSelectedItem();
     }
 
 }
