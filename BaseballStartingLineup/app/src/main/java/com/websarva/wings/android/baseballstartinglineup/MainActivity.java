@@ -21,40 +21,20 @@ public class MainActivity extends AppCompatActivity {
     //スタメンタイトル
     TextView title;
     //各打順の数字配列
-    int numbers[] = new int[20];
+    public static int numbers[] = new int[20];
     //グローバル変数i（データベースへの登録・検索で使う）
     int i = 0;
     //DH無し選択時に+10される
     int k = 0;
-    //各打順の名前
-    TextView name1;
-    TextView name2;
-    TextView name3;
-    TextView name4;
-    TextView name5;
-    TextView name6;
-    TextView name7;
-    TextView name8;
-    TextView name9;
-    TextView nameP;
     //スピナーオブジェクト
     Spinner spinner;
     //クリアボタン（現在上部に入力中のものを未入力状態に戻す（選択打順も））
     Button clear;
-    //各打順のポジション
-    TextView position1;
-    TextView position2;
-    TextView position3;
-    TextView position4;
-    TextView position5;
-    TextView position6;
-    TextView position7;
-    TextView position8;
-    TextView position9;
-    TextView positionP;
-    //各打順の名前,ポジション用配列
-    String[] names;
-    String[] positions;
+    //各打順の名前,ポジション用配列(0は使わないので20個用意)
+    public static String[] names = new String[20];
+    public static String[] positions = new String[20];
+
+    View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +42,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        // fragment作成
-        LineupDhFragment dhFragment = new LineupDhFragment();
-        LineupNormalFragment normalFragment = new LineupNormalFragment();
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        transaction.add(R.id.lineup_container,dhFragment);
-        transaction.add(R.id.lineup_container,normalFragment);
-        transaction.show(dhFragment);
-        transaction.hide(normalFragment);
-        transaction.commit();
 
         //上記のグローバルフィールド紐付け
         tvSelectNum = findViewById(R.id.selectNum);
@@ -82,26 +51,6 @@ public class MainActivity extends AppCompatActivity {
         title = findViewById(R.id.title);
 
 
-        name1 = findViewById(R.id.name1DH);
-        name2 = findViewById(R.id.name2DH);
-        name3 = findViewById(R.id.name3DH);
-        name4 = findViewById(R.id.name4DH);
-        name5 = findViewById(R.id.name5DH);
-        name6 = findViewById(R.id.name6DH);
-        name7 = findViewById(R.id.name7DH);
-        name8 = findViewById(R.id.name8DH);
-        name9 = findViewById(R.id.name9DH);
-        nameP = findViewById(R.id.nameP);
-        position1 = findViewById(R.id.position1DH);
-        position2 = findViewById(R.id.position2DH);
-        position3 = findViewById(R.id.position3DH);
-        position4 = findViewById(R.id.position4DH);
-        position5 = findViewById(R.id.position5DH);
-        position6 = findViewById(R.id.position6DH);
-        position7 = findViewById(R.id.position7DH);
-        position8 = findViewById(R.id.position8DH);
-        position9 = findViewById(R.id.position9DH);
-        positionP = findViewById(R.id.positionP);
         //打順配列に打順番号入れる(1~19番)
         for(int i = 1;i < 20;i++){
             numbers[i] = i;
@@ -112,6 +61,21 @@ public class MainActivity extends AppCompatActivity {
         etName.setEnabled(false);
 
 //        TODO データベースから引っ張ってきて表示するメソッドorないなら空情報を配列に入れる
+        DatabaseUsing databaseUsing = new DatabaseUsing(this);
+        databaseUsing.getPlayersInfo(k);
+
+        // fragment作成
+        LineupDhFragment dhFragment = LineupDhFragment.newInstance(names,positions);
+        LineupNormalFragment normalFragment = new LineupNormalFragment();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.add(R.id.lineup_container,dhFragment);
+        transaction.add(R.id.lineup_container,normalFragment);
+        transaction.show(dhFragment);
+        transaction.hide(normalFragment);
+        transaction.commit();
+
 
 
     }
