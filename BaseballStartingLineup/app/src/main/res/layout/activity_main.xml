@@ -102,9 +102,11 @@
             </FrameLayout>
 
             <Button
+                android:id="@+id/field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/field"/>
+                android:text="@string/field"
+                android:onClick="onClickField"/>
 
         </LinearLayout>
     </ScrollView>

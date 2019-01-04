@@ -159,7 +159,8 @@ public class MainActivity extends AppCompatActivity {
         // データベースに登録
         databaseUsing.setPlayerInfo(i,position,playerName,k);
 
-        //それぞれ初期状態に戻す
+        //それぞれ初期状態に戻
+        // TODO 要メソッド化（true時false時いちいち使っちゃってる）
         tvSelectNum.setText(getString(R.string.current_num));
         etName.setText("");
         spinner.setSelection(0);
@@ -174,5 +175,11 @@ public class MainActivity extends AppCompatActivity {
         dhFragment.textChange(i,position,playerName);
 
     }
+
+    // フィールド表示
+    public void onClickField(View view){
+        // 守備フィールドへ
+    }
+
 
 }
