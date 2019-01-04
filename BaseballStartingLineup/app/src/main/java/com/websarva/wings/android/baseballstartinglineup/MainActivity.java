@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     //登録ボタン
     Button record;
     //キャンセルボタン
-    Button cansel;
+    Button cancel;
     //スタメンタイトル
     TextView title;
     //各打順の数字配列
@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     View view;
 
+    LineupDhFragment dhFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         record = findViewById(R.id.record);
         clear = findViewById(R.id.clear);
         title = findViewById(R.id.title);
-        cansel = findViewById(R.id.cancel);
+        cancel = findViewById(R.id.cancel);
 
 
         //打順配列に打順番号入れる(1~19番)
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         databaseUsing.getPlayersInfo(k);
 
         // fragment作成
-        LineupDhFragment dhFragment = LineupDhFragment.newInstance(names,positions);
+        dhFragment = LineupDhFragment.newInstance(names,positions);
         LineupNormalFragment normalFragment = new LineupNormalFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClick9(View view){
         commonMethod(9);
     }
+    public void onClickP(View view) { commonMethod(10);}
     //打順ボタン共通メソッド（打順・登録状態表示、EditText・登録/クリアボタンの有効化、データベース用の数字登録）
     public void commonMethod(int j){
         //　表示打順のためkを反映させない
@@ -121,10 +124,12 @@ public class MainActivity extends AppCompatActivity {
         if(etName.getText().toString().equals("-----")){
             etName.setText("");
         }
+        etName.setFocusable(true);
+        etName.setFocusableInTouchMode(true);
         etName.setEnabled(true);
         record.setEnabled(true);
         clear.setEnabled(true);
-        cansel.setEnabled(true);
+        cancel.setEnabled(true);
 
         i = j;
     }
@@ -150,6 +155,24 @@ public class MainActivity extends AppCompatActivity {
         }
         //ポジション取得
         String position = (String) spinner.getSelectedItem();
+
+        // データベースに登録
+        databaseUsing.setPlayerInfo(i,position,playerName,k);
+
+        //それぞれ初期状態に戻す
+        tvSelectNum.setText(getString(R.string.current_num));
+        etName.setText("");
+        spinner.setSelection(0);
+        etName.setFocusable(false);
+        etName.setFocusableInTouchMode(false);
+        etName.setEnabled(false);
+        record.setEnabled(false);
+        cancel.setEnabled(false);
+        clear.setEnabled(false);
+
+        // レイアウトのオーダーに反映
+        dhFragment.textChange(i,position,playerName);
+
     }
 
 }

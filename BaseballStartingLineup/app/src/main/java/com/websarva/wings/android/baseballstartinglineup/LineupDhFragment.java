@@ -98,7 +98,7 @@ public class LineupDhFragment extends Fragment {
 
     public void setInfo(String[] names,String[] positions ){
 
-        // レイアウトに表示
+        // レイアウトにいっせい表示
         name1.setText(names[1]);
         name2.setText(names[2]);
         name3.setText(names[3]);
@@ -111,17 +111,61 @@ public class LineupDhFragment extends Fragment {
         nameP.setText(names[10]);
 
         position1.setText(positions[1]);
-        position1.setText(positions[2]);
-        position1.setText(positions[3]);
-        position1.setText(positions[4]);
-        position1.setText(positions[5]);
-        position1.setText(positions[6]);
-        position1.setText(positions[7]);
-        position1.setText(positions[8]);
-        position1.setText(positions[9]);
+        position2.setText(positions[2]);
+        position3.setText(positions[3]);
+        position4.setText(positions[4]);
+        position5.setText(positions[5]);
+        position6.setText(positions[6]);
+        position7.setText(positions[7]);
+        position8.setText(positions[8]);
+        position9.setText(positions[9]);
 
     }
 
-    public void textChange(String position,String name){}
+    // 特定の打順の内容変更
+    public void textChange(int num,String position,String name){
+
+        switch (num){
+            case 1:
+                position1.setText(position);
+                name1.setText(name);
+                break;
+            case 2:
+                position2.setText(position);
+                name2.setText(name);
+                break;
+            case 3:
+                position3.setText(position);
+                name3.setText(name);
+                break;
+            case 4:
+                position4.setText(position);
+                name4.setText(name);
+                break;
+            case 5:
+                position5.setText(position);
+                name5.setText(name);
+                break;
+            case 6:
+                position6.setText(position);
+                name6.setText(name);
+                break;
+            case 7:
+                position7.setText(position);
+                name7.setText(name);
+                break;
+            case 8:
+                position8.setText(position);
+                name8.setText(name);
+                break;
+            case 9:
+                position9.setText(position);
+                name9.setText(name);
+                break;
+            case 10:
+                nameP.setText(name);
+                break;
+        }
+    }
 
 }

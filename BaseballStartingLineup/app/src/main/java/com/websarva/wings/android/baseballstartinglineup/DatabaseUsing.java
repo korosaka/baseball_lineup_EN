@@ -78,7 +78,7 @@ public class DatabaseUsing {
         try {
             //今あるデータ削除➡その後インサート
             //削除用文字列
-            String sqlDelete = "DELETE FROM batting WHERE number = ?";
+            String sqlDelete = "DELETE FROM lineup WHERE number = ?";
             //上記文字列からPreparedStatement取得（SQLを実行するためのインターフェース）
             SQLiteStatement stmt = dbW.compileStatement(sqlDelete);
             //変数バインド（数字は何番目の？に入れるか,？に入れるもの）（kはオプション選択によって変わる）
