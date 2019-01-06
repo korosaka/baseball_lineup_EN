@@ -1,5 +1,6 @@
 package com.websarva.wings.android.baseballstartinglineup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -179,6 +180,20 @@ public class MainActivity extends AppCompatActivity {
     // フィールド表示
     public void onClickField(View view){
         // 守備フィールドへ
+
+        //遷移先に送るデータ（各守備位置・名前）
+        String[] positionIntent = new String[11];
+        String[] nameIntent = new String[11];
+        //送るデータ（10人分）を抽出（正規orサブ）
+        for (int i = 1;i < 11;i++){
+            positionIntent[i] = positions[i + k];
+            nameIntent[i] = names[i + k];
+        }
+        //フィールド画面へ
+        Intent intent = new Intent(MainActivity.this,FieldActivity.class);
+        intent.putExtra("positions",positionIntent);
+        intent.putExtra("names",nameIntent);
+        startActivity(intent);
     }
 
 
