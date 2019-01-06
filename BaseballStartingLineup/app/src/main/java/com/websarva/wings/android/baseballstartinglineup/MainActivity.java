@@ -114,11 +114,11 @@ public class MainActivity extends AppCompatActivity {
     public void onClick9(View view){
         commonMethod(9);
     }
-    public void onClickP(View view) { commonMethod(10);}
+    public void onClickP(View view){
+        commonMethod(10);
+    }
     //打順ボタン共通メソッド（打順・登録状態表示、EditText・登録/クリアボタンの有効化、データベース用の数字登録）
     public void commonMethod(int j){
-        //　表示打順のためkを反映させない
-        tvSelectNum.setText(String.valueOf(j));
         //下記メソッド使用
         setSpinner(spinner,positions[j + k]);
         etName.setText(names[j + k]);
@@ -133,7 +133,18 @@ public class MainActivity extends AppCompatActivity {
         cancel.setEnabled(true);
 
         i = j;
+
+        // 投手選択時
+        if(j == 10){
+            tvSelectNum.setText("P");
+            spinner.setEnabled(false);
+        } else {
+            // 野手
+            tvSelectNum.setText(String.valueOf(j));
+        }
+
     }
+
     //文字列からスピナーをセットするメソッド（上記メソッドで使用）
     public void setSpinner(Spinner spinner,String position){
         SpinnerAdapter adapter = spinner.getAdapter();
@@ -156,9 +167,13 @@ public class MainActivity extends AppCompatActivity {
         }
         //ポジション取得
         String position = (String) spinner.getSelectedItem();
+        if(i == 10){
+            position = "(P)";
+        }
 
         // データベースに登録
         databaseUsing.setPlayerInfo(i,position,playerName,k);
+
 
         //それぞれ初期状態に戻
         // TODO 要メソッド化（true時false時いちいち使っちゃってる）
@@ -174,12 +189,16 @@ public class MainActivity extends AppCompatActivity {
 
         // レイアウトのオーダーに反映
         dhFragment.textChange(i,position,playerName);
+        // フィールド変数にも反映
+        names[i] = playerName;
+        positions[i] = position;
 
     }
 
     // フィールド表示
     public void onClickField(View view){
-        // 守備フィールドへ
+
+        databaseUsing.getPlayersInfo(k);
 
         //遷移先に送るデータ（各守備位置・名前）
         String[] positionIntent = new String[11];

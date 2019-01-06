@@ -49,7 +49,7 @@ public class FieldActivity extends AppCompatActivity {
         //ある打順の守備位置dataがどこかのポジションと合致すれば、その打順登録名を守備フィールドに
         for(int i = 1;i < 11;i++){
             switch (positions[i]){
-                case "(投)":
+                case "(P)":
                     position1.setText(names[i] + " (P)");
                     break;
                 case "(C)":
@@ -80,7 +80,6 @@ public class FieldActivity extends AppCompatActivity {
                     positionDH.setText(names[i] + " (" + i + ")");
                     break;
                 default:
-                    position1.setText(names[i] + " (" + (i + 1) + ")");
                     break;
             }
         }
