@@ -74,7 +74,8 @@
                         android:enabled="false"
                         android:text="@string/cancel"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:onClick="onClickCancel"/>
 
                     <Button
                         android:id="@+id/record"

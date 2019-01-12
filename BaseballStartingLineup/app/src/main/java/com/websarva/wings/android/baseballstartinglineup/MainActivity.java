@@ -196,6 +196,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // クリアーボタンクリック
+    public void onClickClear(View view){
+        //入力名をクリア状態に
+        etName.setText("");
+        //スピナー（守備位置）を未選択状態に戻す
+        spinner.setSelection(0);
+    }
+    // キャンセルボタンクリック
+    public void onClickCancel(View view){
+        //それぞれ初期状態に戻す
+        tvSelectNum.setText(getString(R.string.current_num));
+        etName.setText("");
+        spinner.setSelection(0);
+        etName.setFocusable(false);
+        etName.setFocusableInTouchMode(false);
+        etName.setEnabled(false);
+        record.setEnabled(false);
+        cancel.setEnabled(false);
+        clear.setEnabled(false);
+    }
+
     // フィールド表示
     public void onClickField(View view){
 
