@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // 野手
             tvSelectNum.setText(String.valueOf(j));
+            spinner.setEnabled(true);
         }
 
     }
