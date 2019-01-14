@@ -43,14 +43,19 @@ public class FieldActivity extends AppCompatActivity {
         //インテントobject
         Intent intent = getIntent();
         //data取得
-        String positions[] = intent.getStringArrayExtra("positions");
-        String names[] = intent.getStringArrayExtra("names");
+        String positions[] = intent.getStringArrayExtra("positionsOfTop");
+        String names[] = intent.getStringArrayExtra("namesOfTop");
+        boolean isDh = intent.getBooleanExtra("isDh",false);
 
         //ある打順の守備位置dataがどこかのポジションと合致すれば、その打順登録名を守備フィールドに
         for(int i = 1;i < 11;i++){
             switch (positions[i]){
                 case "(P)":
-                    position1.setText(names[i] + " (P)");
+                    if(isDh){
+                        position1.setText(names[i] + " (P)");
+                    } else {
+                        position1.setText(names[i] + " (" + i + ")");
+                    }
                     break;
                 case "(C)":
                     position2.setText(names[i] + " (" + i + ")");

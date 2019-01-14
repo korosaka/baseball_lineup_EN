@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -34,14 +38,18 @@ public class MainActivity extends AppCompatActivity {
     //クリアボタン（現在上部に入力中のものを未入力状態に戻す（選択打順も））
     Button clear;
     //各打順の名前,ポジション用配列(0は使わないので20個用意)
-    public static String[] names = new String[20];
-    public static String[] positions = new String[20];
+    public static String[] namesOfTop = new String[20];
+    public static String[] positionsOfTop = new String[20];
 
     private DatabaseUsing databaseUsing;
 
     View view;
 
     LineupDhFragment dhFragment;
+    LineupNormalFragment normalFragment;
+
+    boolean isFirstTImeNormalDisplay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,17 +80,17 @@ public class MainActivity extends AppCompatActivity {
         databaseUsing = new DatabaseUsing(this);
         databaseUsing.getPlayersInfo(k);
 
-        // fragment作成
-        dhFragment = LineupDhFragment.newInstance(names,positions);
-        LineupNormalFragment normalFragment = new LineupNormalFragment();
+
+        // ２つのfragment作成してshow/hide
+        dhFragment = LineupDhFragment.newInstance(namesOfTop, positionsOfTop);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         transaction.add(R.id.lineup_container,dhFragment);
-        transaction.add(R.id.lineup_container,normalFragment);
         transaction.show(dhFragment);
-        transaction.hide(normalFragment);
         transaction.commit();
+
+        isFirstTImeNormalDisplay = true;
 
     }
 
@@ -120,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
     //打順ボタン共通メソッド（打順・登録状態表示、EditText・登録/クリアボタンの有効化、データベース用の数字登録）
     public void commonMethod(int j){
         //下記メソッド使用
-        setSpinner(spinner,positions[j + k]);
-        etName.setText(names[j + k]);
+        setSpinner(spinner, positionsOfTop[j + k]);
+        etName.setText(namesOfTop[j + k]);
         if(etName.getText().toString().equals("-----")){
             etName.setText("");
         }
@@ -175,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         // データベースに登録
         databaseUsing.setPlayerInfo(i,position,playerName,k);
 
-
         //それぞれ初期状態に戻
         // TODO 要メソッド化（true時false時いちいち使っちゃってる）
         tvSelectNum.setText(getString(R.string.current_num));
@@ -189,10 +196,14 @@ public class MainActivity extends AppCompatActivity {
         clear.setEnabled(false);
 
         // レイアウトのオーダーに反映
-        dhFragment.textChange(i,position,playerName);
-        // フィールド変数にも反映
-        names[i] = playerName;
-        positions[i] = position;
+        if(k == 0){
+            dhFragment.textChange(i,position,playerName);
+        } else {
+            normalFragment.textChange(i,position,playerName);
+        }
+        // Mainのフィールド変数にも反映
+        namesOfTop[i] = playerName;
+        positionsOfTop[i] = position;
 
     }
 
@@ -220,21 +231,102 @@ public class MainActivity extends AppCompatActivity {
     // フィールド表示
     public void onClickField(View view){
 
+        boolean isDh;
+
         databaseUsing.getPlayersInfo(k);
+
 
         //遷移先に送るデータ（各守備位置・名前）
         String[] positionIntent = new String[11];
         String[] nameIntent = new String[11];
-        //送るデータ（10人分）を抽出（正規orサブ）
-        for (int i = 1;i < 11;i++){
-            positionIntent[i] = positions[i + k];
-            nameIntent[i] = names[i + k];
+        //送るデータ（9人分）を抽出（正規orサブ）
+        for (int i = 1;i < 10;i++){
+            positionIntent[i] = positionsOfTop[i + k];
+            nameIntent[i] = namesOfTop[i + k];
+        }
+        // DH選択時は10人目に投手情報渡す
+        if(k == 0){
+            positionIntent[10] = positionsOfTop[10];
+            nameIntent[10] = namesOfTop[10];
+            isDh = true;
+        } else {
+            positionIntent[10] = "";
+            nameIntent[10] = "";
+            isDh = false;
         }
         //フィールド画面へ
         Intent intent = new Intent(MainActivity.this,FieldActivity.class);
-        intent.putExtra("positions",positionIntent);
-        intent.putExtra("names",nameIntent);
+        intent.putExtra("positionsOfTop",positionIntent);
+        intent.putExtra("namesOfTop",nameIntent);
+        intent.putExtra("isDh",isDh);
         startActivity(intent);
+    }
+
+    //オプションメニュー実装
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        //メニューインフレター取得
+        MenuInflater inflater = getMenuInflater();
+        //オプションメニュー用.xmlファイルをインフレート（メニュー部品をJavaオブジェクトに）
+        inflater.inflate(R.menu.menu_options_list,menu);
+        //親クラスの同名メソッドで返却
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        int itemId = item.getItemId();
+
+
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        String[] spinnerResource;
+
+        switch (itemId){
+
+            case R.id.menuOptionChangeToDh:
+                k = 0;
+
+                transaction.show(dhFragment);
+                transaction.hide(normalFragment);
+
+                spinnerResource = getResources().getStringArray(R.array.positions_dh);
+
+
+                break;
+
+            default:
+                k = 10;
+
+                if(isFirstTImeNormalDisplay){
+
+                    normalFragment = LineupNormalFragment.newInstance(namesOfTop,positionsOfTop);
+                    databaseUsing.getPlayersInfo(k);
+                    transaction.add(R.id.lineup_container,normalFragment);
+
+                }
+
+
+
+                transaction.show(normalFragment);
+                transaction.hide(dhFragment);
+
+                spinnerResource = getResources().getStringArray(R.array.positions_not_dh);
+
+                break;
+        }
+
+        transaction.commit();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,spinnerResource);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
+
+        return super.onOptionsItemSelected(item);
     }
 
 

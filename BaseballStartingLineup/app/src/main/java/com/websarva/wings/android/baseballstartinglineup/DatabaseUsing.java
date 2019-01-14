@@ -56,8 +56,8 @@ public class DatabaseUsing {
                     positionOfDataUsing = "----";
                 }
                 //各打順の名前・ポジションを配列に格納しておく
-                MainActivity.names[j + k] = nameOfDataUsing;
-                MainActivity.positions[j + k] = positionOfDataUsing;
+                MainActivity.namesOfTop[j + k] = nameOfDataUsing;
+                MainActivity.positionsOfTop[j + k] = positionOfDataUsing;
             }
             //catchないとエラー出る　
             catch (Exception e) {

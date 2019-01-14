@@ -91,25 +91,25 @@ public class LineupNormalFragment extends Fragment {
     public void setInfo(String[] names, String[] positions) {
 
         // レイアウトにいっせい表示
-        name1.setText(names[11]);
-        name2.setText(names[12]);
-        name3.setText(names[13]);
-        name4.setText(names[14]);
-        name5.setText(names[15]);
-        name6.setText(names[16]);
-        name7.setText(names[17]);
-        name8.setText(names[18]);
-        name9.setText(names[19]);
+        name1.setText(names[1]);
+        name2.setText(names[2]);
+        name3.setText(names[3]);
+        name4.setText(names[4]);
+        name5.setText(names[5]);
+        name6.setText(names[6]);
+        name7.setText(names[7]);
+        name8.setText(names[8]);
+        name9.setText(names[9]);
 
-        position1.setText(positions[11]);
-        position2.setText(positions[12]);
-        position3.setText(positions[13]);
-        position4.setText(positions[14]);
-        position5.setText(positions[15]);
-        position6.setText(positions[16]);
-        position7.setText(positions[17]);
-        position8.setText(positions[18]);
-        position9.setText(positions[19]);
+        position1.setText(positions[1]);
+        position2.setText(positions[2]);
+        position3.setText(positions[3]);
+        position4.setText(positions[4]);
+        position5.setText(positions[5]);
+        position6.setText(positions[6]);
+        position7.setText(positions[7]);
+        position8.setText(positions[8]);
+        position9.setText(positions[9]);
 
     }
 

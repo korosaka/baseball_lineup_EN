@@ -45,4 +45,6 @@
     <string name="field">Field</string>
     <string name="back">Back</string>
     <string name="cancel">CANCEL</string>
+    <string name="menu_of_dh">DH</string>
+    <string name="menu_of_not_dh">NOT DH</string>
 </resources>
