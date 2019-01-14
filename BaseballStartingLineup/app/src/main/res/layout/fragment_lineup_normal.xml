@@ -27,7 +27,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn1"
+            android:id="@+id/btn1_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick1"
@@ -35,7 +35,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position1"
+            android:id="@+id/position1_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -47,7 +47,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name1"
+            android:id="@+id/name1_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -65,7 +65,7 @@
         android:layout_marginTop="-5dp">
 
         <Button
-            android:id="@+id/btn2"
+            android:id="@+id/btn2_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick2"
@@ -73,7 +73,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position2"
+            android:id="@+id/position2_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -85,7 +85,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name2"
+            android:id="@+id/name2_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -103,7 +103,7 @@
         android:layout_marginTop="-5dp">
 
         <Button
-            android:id="@+id/btn3"
+            android:id="@+id/btn3_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick3"
@@ -111,7 +111,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position3"
+            android:id="@+id/position3_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -123,7 +123,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name3"
+            android:id="@+id/name3_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -141,7 +141,7 @@
         android:layout_marginTop="-5dp">
 
         <Button
-            android:id="@+id/btn4"
+            android:id="@+id/btn4_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick4"
@@ -149,7 +149,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position4"
+            android:id="@+id/position4_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -161,7 +161,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name4"
+            android:id="@+id/name4_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -179,7 +179,7 @@
         android:layout_marginTop="-5dp">
 
         <Button
-            android:id="@+id/btn5"
+            android:id="@+id/btn5_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick5"
@@ -187,7 +187,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position5"
+            android:id="@+id/position5_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -199,7 +199,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name5"
+            android:id="@+id/name5_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -217,7 +217,7 @@
         android:layout_marginTop="-5dp">
 
         <Button
-            android:id="@+id/btn6"
+            android:id="@+id/btn6_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick6"
@@ -225,7 +225,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position6"
+            android:id="@+id/position6_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -237,7 +237,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name6"
+            android:id="@+id/name6_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -255,7 +255,7 @@
         android:layout_marginTop="-5dp">
 
         <Button
-            android:id="@+id/btn7"
+            android:id="@+id/btn7_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick7"
@@ -263,7 +263,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position7"
+            android:id="@+id/position7_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -275,7 +275,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name7"
+            android:id="@+id/name7_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -293,7 +293,7 @@
         android:layout_marginTop="-5dp">
 
         <Button
-            android:id="@+id/btn8"
+            android:id="@+id/btn8_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick8"
@@ -301,7 +301,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position8"
+            android:id="@+id/position8_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -313,7 +313,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name8"
+            android:id="@+id/name8_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -332,7 +332,7 @@
         android:layout_marginBottom="35dp">
 
         <Button
-            android:id="@+id/btn9"
+            android:id="@+id/btn9_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick9"
@@ -340,7 +340,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/position9"
+            android:id="@+id/position9_normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -352,7 +352,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/name9"
+            android:id="@+id/name9_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

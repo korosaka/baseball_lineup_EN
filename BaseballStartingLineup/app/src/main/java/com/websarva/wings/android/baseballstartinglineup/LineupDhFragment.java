@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class LineupDhFragment extends Fragment {
-    private static final String NAMES = "names";
-    private static final String POSITONS = "positions";
+    private static final String NAMES = "namesOfDh";
+    private static final String POSITONS = "positionsOfDh";
 
     public static Bundle args;
 
@@ -37,8 +37,8 @@ public class LineupDhFragment extends Fragment {
     TextView position9;
     TextView positionP;
 
-    private String[] namesDH = new String[10];
-    private String[] positionsDH = new String[9];
+    private String[] namesDH = new String[11];
+    private String[] positionsDH = new String[10];
 
 
     public static LineupDhFragment newInstance(String[] names,String[] positions){

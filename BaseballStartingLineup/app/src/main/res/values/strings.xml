@@ -15,7 +15,7 @@
     <string name="save">RECORD</string>
     <string name="clear">CLEAR</string>
     <string name="title">Starting Lineup(DH)</string>
-    <string-array name="positions">
+    <string-array name="positions_dh">
         <item>----</item>
         <item>(C)</item>
         <item>(1B)</item>
@@ -27,6 +27,19 @@
         <item>(RF)</item>
         <item>(DH)</item>
     </string-array>
+    <string-array name="positions_not_dh">
+        <item>----</item>
+        <item>(P)</item>
+        <item>(C)</item>
+        <item>(1B)</item>
+        <item>(2B)</item>
+        <item>(3B)</item>
+        <item>(SS)</item>
+        <item>(LF)</item>
+        <item>(CF)</item>
+        <item>(RF)</item>
+    </string-array>
+
     <string name="order">DH</string>
     <string name="subOrder">NO-DH</string>
     <string name="field">Field</string>
