@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 public class LineupNormalFragment extends Fragment {
 
-    private static final String NAMES = "namesOfNotDh";
-    private static final String POSITONS = "positionsOfNotDh";
+    private static final String NAMES_NORMAL = "namesOfNotDh";
+    private static final String POSITONS_NORMAL = "positionsOfNotDh";
 
     public static Bundle args;
 
@@ -36,8 +36,8 @@ public class LineupNormalFragment extends Fragment {
     TextView position8;
     TextView position9;
 
-    private String[] namesOfNotDh = new String[10];
-    private String[] positionsOfNotDh = new String[10];
+    private String[] namesOfNotDh = new String[20];
+    private String[] positionsOfNotDh = new String[20];
 
 
     public static LineupNormalFragment newInstance(String[] names, String[] positions) {
@@ -45,8 +45,8 @@ public class LineupNormalFragment extends Fragment {
         LineupNormalFragment fragment = new LineupNormalFragment();
 
         args = new Bundle();
-        args.putStringArray(NAMES, names);
-        args.putStringArray(POSITONS, positions);
+        args.putStringArray(NAMES_NORMAL, names);
+        args.putStringArray(POSITONS_NORMAL, positions);
         fragment.setArguments(args);
 
         return fragment;
@@ -82,6 +82,9 @@ public class LineupNormalFragment extends Fragment {
         position8 = v.findViewById(R.id.position8_normal);
         position9 = v.findViewById(R.id.position9_normal);
 
+        namesOfNotDh = getArguments().getStringArray(NAMES_NORMAL);
+        positionsOfNotDh = getArguments().getStringArray(POSITONS_NORMAL);
+
         setInfo(namesOfNotDh, positionsOfNotDh);
 
 
@@ -91,25 +94,25 @@ public class LineupNormalFragment extends Fragment {
     public void setInfo(String[] names, String[] positions) {
 
         // レイアウトにいっせい表示
-        name1.setText(names[1]);
-        name2.setText(names[2]);
-        name3.setText(names[3]);
-        name4.setText(names[4]);
-        name5.setText(names[5]);
-        name6.setText(names[6]);
-        name7.setText(names[7]);
-        name8.setText(names[8]);
-        name9.setText(names[9]);
+        name1.setText(names[11]);
+        name2.setText(names[12]);
+        name3.setText(names[13]);
+        name4.setText(names[14]);
+        name5.setText(names[15]);
+        name6.setText(names[16]);
+        name7.setText(names[17]);
+        name8.setText(names[18]);
+        name9.setText(names[19]);
 
-        position1.setText(positions[1]);
-        position2.setText(positions[2]);
-        position3.setText(positions[3]);
-        position4.setText(positions[4]);
-        position5.setText(positions[5]);
-        position6.setText(positions[6]);
-        position7.setText(positions[7]);
-        position8.setText(positions[8]);
-        position9.setText(positions[9]);
+        position1.setText(positions[11]);
+        position2.setText(positions[12]);
+        position3.setText(positions[13]);
+        position4.setText(positions[14]);
+        position5.setText(positions[15]);
+        position6.setText(positions[16]);
+        position7.setText(positions[17]);
+        position8.setText(positions[18]);
+        position9.setText(positions[19]);
 
     }
 

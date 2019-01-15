@@ -302,9 +302,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if(isFirstTImeNormalDisplay){
 
-                    normalFragment = LineupNormalFragment.newInstance(namesOfTop,positionsOfTop);
                     databaseUsing.getPlayersInfo(k);
+                    normalFragment = LineupNormalFragment.newInstance(namesOfTop,positionsOfTop);
                     transaction.add(R.id.lineup_container,normalFragment);
+
+                    isFirstTImeNormalDisplay = false;
 
                 }
 
