@@ -99,6 +99,10 @@ public class FieldActivity extends AppCompatActivity {
             }
         }
 
+        if(!isDh){
+            positionDH.setText("");
+        }
+
     }
 
     public void changeTextSize(TextView textView){
