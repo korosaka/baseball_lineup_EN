@@ -52,45 +52,71 @@ public class FieldActivity extends AppCompatActivity {
             switch (positions[i]){
                 case "(P)":
                     if(isDh){
-                        position1.setText(names[i] + " (P)");
+                        position1.setText("[P] " + names[i]);
                     } else {
-                        position1.setText(names[i] + " (" + i + ")");
+                        position1.setText("[" + i + "] " + names[i]);
                     }
+                    changeTextSize(position1);
                     break;
                 case "(C)":
-                    position2.setText(names[i] + " (" + i + ")");
+                    position2.setText("[" + i + "] " + names[i]);
+                    changeTextSize(position2);
                     break;
                 case "(1B)":
-                    position3.setText(names[i] + " (" + i + ")");
+                    position3.setText("[" + i + "] " + names[i]);
+                    changeTextSize(position3);
                     break;
                 case "(2B)":
-                    position4.setText(names[i] + " (" + i + ")");
+                    position4.setText("[" + i + "] " + names[i]);
+                    changeTextSize(position4);
                     break;
                 case "(3B)":
-                    position5.setText(names[i] + " (" + i + ")");
+                    position5.setText("[" + i + "] " + names[i]);
+                    changeTextSize(position5);
                     break;
                 case "(SS)":
-                    position6.setText(names[i] + " (" + i + ")");
+                    position6.setText("[" + i + "] " + names[i]);
+                    changeTextSize(position6);
                     break;
                 case "(LF)":
-                    position7.setText(names[i] + " (" + i + ")");
+                    position7.setText("[" + i + "] " + names[i]);
+                    changeTextSize(position7);
                     break;
                 case "(CF)":
-                    position8.setText(names[i] + " (" + i + ")");
+                    position8.setText("[" + i + "] " + names[i]);
+                    changeTextSize(position8);
                     break;
                 case "(RF)":
-                    position9.setText(names[i] + " (" + i + ")");
+                    position9.setText("[" + i + "] " + names[i]);
+                    changeTextSize(position9);
                     break;
                 case "(DH)":
-                    positionDH.setText(names[i] + " (" + i + ")");
+                    positionDH.setText("[" + i + "] " + names[i]);
+                    changeTextSize(positionDH);
                     break;
                 default:
                     break;
             }
         }
 
+    }
+
+    public void changeTextSize(TextView textView){
+        // 字数取得
+        int lengthOfText = textView.length();
+
+        // 字数によって文字サイズ変更
+        if(lengthOfText < 17){
+            textView.setTextSize(13);
+        } else if(lengthOfText < 19){
+            textView.setTextSize(10);
+        } else {
+            textView.setTextSize(8);
+        }
 
     }
+
+
     //戻るボタン
     public void onClickBack(View view){
         finish();
