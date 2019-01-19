@@ -24,7 +24,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="-5dp">
 
         <Button
             android:id="@+id/btn1DH"
@@ -32,25 +33,24 @@
             android:layout_height="wrap_content"
             android:onClick="onClick1"
             android:text="@string/first"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position1DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name1DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -68,27 +68,26 @@
             android:id="@+id/btn2DH"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:onClick="onClick2"
             android:text="@string/second"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position2DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name2DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -108,25 +107,24 @@
             android:layout_height="wrap_content"
             android:onClick="onClick3"
             android:text="@string/third"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position3DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name3DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -146,25 +144,24 @@
             android:layout_height="wrap_content"
             android:onClick="onClick4"
             android:text="@string/fourth"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position4DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name4DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -184,25 +181,24 @@
             android:layout_height="wrap_content"
             android:onClick="onClick5"
             android:text="@string/fifth"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position5DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name5DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -222,25 +218,24 @@
             android:layout_height="wrap_content"
             android:onClick="onClick6"
             android:text="@string/sixth"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position6DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name6DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -260,25 +255,25 @@
             android:layout_height="wrap_content"
             android:onClick="onClick7"
             android:text="@string/seventh"
+            android:layout_gravity="center"
+
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position7DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name7DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -298,25 +293,24 @@
             android:layout_height="wrap_content"
             android:onClick="onClick8"
             android:text="@string/eighth"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position8DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name8DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -336,25 +330,24 @@
             android:layout_height="wrap_content"
             android:onClick="onClick9"
             android:text="@string/ninth"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/position9DH"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/position"
+            android:gravity="center"
             android:textColor="@android:color/holo_green_dark"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name9DH"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
@@ -374,25 +367,24 @@
             android:layout_height="wrap_content"
             android:onClick="onClickP"
             android:text="P"
+            android:layout_gravity="center"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/positionP"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
             android:text="(P)"
+            android:gravity="center"
             android:textColor="?attr/colorAccent"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/nameP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="5dp"
             android:text="@string/unselected"
             android:textColor="@color/colorPrimaryDark"
