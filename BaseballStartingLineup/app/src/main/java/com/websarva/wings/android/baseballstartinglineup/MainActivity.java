@@ -226,8 +226,8 @@ public class MainActivity extends AppCompatActivity {
             normalFragment.textChange(i,position,playerName);
         }
         // Mainのフィールド変数にも反映
-        namesOfTop[i] = playerName;
-        positionsOfTop[i] = position;
+        namesOfTop[i + k] = playerName;
+        positionsOfTop[i + k] = position;
 
     }
 
@@ -314,48 +314,43 @@ public class MainActivity extends AppCompatActivity {
             switch (itemId){
 
                 case R.id.menuOptionChangeToDh:
-
                     k = 0;
-
                     transaction.show(dhFragment);
                     transaction.hide(normalFragment);
-
                     spinnerResource = getResources().getStringArray(R.array.positions_dh);
-
-
                     break;
 
                 default:
                     k = 10;
-
                     if(isFirstTImeNormalDisplay){
-
                         databaseUsing.getPlayersInfo(k);
                         normalFragment = LineupNormalFragment.newInstance(namesOfTop,positionsOfTop);
                         transaction.add(R.id.lineup_container,normalFragment);
-
                         isFirstTImeNormalDisplay = false;
-
                     }
-
                     transaction.show(normalFragment);
                     transaction.hide(dhFragment);
-
                     spinnerResource = getResources().getStringArray(R.array.positions_not_dh);
-
                     break;
             }
-
             transaction.commit();
-
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,spinnerResource);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
             spinner.setAdapter(adapter);
 
+            // TODO 要メソッド化
+            tvSelectNum.setText(getString(R.string.current_num));
+            etName.setText("");
+            spinner.setSelection(0);
+            spinner.setEnabled(false);
+            etName.setFocusable(false);
+            etName.setFocusableInTouchMode(false);
+            etName.setEnabled(false);
+            record.setEnabled(false);
+            cancel.setEnabled(false);
+            clear.setEnabled(false);
 
             return super.onOptionsItemSelected(item);
-
         }
 
         return super.onOptionsItemSelected(item);
