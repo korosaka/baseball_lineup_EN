@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         databaseUsing.getPlayersInfo(k);
 
 
-        // ２つのfragment作成してshow/hide
+        // fragment作成してshow/hide
         dhFragment = LineupDhFragment.newInstance(namesOfTop, positionsOfTop);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -303,56 +303,62 @@ public class MainActivity extends AppCompatActivity {
 
         int itemId = item.getItemId();
 
+        if( (itemId == R.id.menuOptionChangeToDh && k == 0) || (itemId == R.id.menuOptionChangeToNormal && k == 10)){
+            // 今表示してるfragment選択なら何もしない
+        } else {
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            String[] spinnerResource;
+
+            switch (itemId){
+
+                case R.id.menuOptionChangeToDh:
+
+                    k = 0;
+
+                    transaction.show(dhFragment);
+                    transaction.hide(normalFragment);
+
+                    spinnerResource = getResources().getStringArray(R.array.positions_dh);
 
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    break;
 
-        String[] spinnerResource;
+                default:
+                    k = 10;
 
-        switch (itemId){
+                    if(isFirstTImeNormalDisplay){
 
-            case R.id.menuOptionChangeToDh:
-                k = 0;
+                        databaseUsing.getPlayersInfo(k);
+                        normalFragment = LineupNormalFragment.newInstance(namesOfTop,positionsOfTop);
+                        transaction.add(R.id.lineup_container,normalFragment);
 
-                transaction.show(dhFragment);
-                transaction.hide(normalFragment);
+                        isFirstTImeNormalDisplay = false;
 
-                spinnerResource = getResources().getStringArray(R.array.positions_dh);
+                    }
+
+                    transaction.show(normalFragment);
+                    transaction.hide(dhFragment);
+
+                    spinnerResource = getResources().getStringArray(R.array.positions_not_dh);
+
+                    break;
+            }
+
+            transaction.commit();
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,spinnerResource);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            spinner.setAdapter(adapter);
 
 
-                break;
+            return super.onOptionsItemSelected(item);
 
-            default:
-                k = 10;
-
-                if(isFirstTImeNormalDisplay){
-
-                    databaseUsing.getPlayersInfo(k);
-                    normalFragment = LineupNormalFragment.newInstance(namesOfTop,positionsOfTop);
-                    transaction.add(R.id.lineup_container,normalFragment);
-
-                    isFirstTImeNormalDisplay = false;
-
-                }
-
-                transaction.show(normalFragment);
-                transaction.hide(dhFragment);
-
-                spinnerResource = getResources().getStringArray(R.array.positions_not_dh);
-
-                break;
         }
-
-        transaction.commit();
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,spinnerResource);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-
 
         return super.onOptionsItemSelected(item);
     }
-
 
 }
