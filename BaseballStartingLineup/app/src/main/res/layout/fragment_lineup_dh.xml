@@ -9,11 +9,12 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
         android:text="@string/title"
         android:textColor="@android:color/holo_blue_light"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         android:focusable="true"
         android:focusableInTouchMode="true">
@@ -358,7 +359,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="-5dp"
-        android:layout_marginBottom="35dp">
+        android:layout_marginBottom="15dp">
 
         <Button
             android:id="@+id/btnP"

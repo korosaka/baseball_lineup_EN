@@ -15,6 +15,7 @@
     <string name="save">RECORD</string>
     <string name="clear">CLEAR</string>
     <string name="title">Starting Lineup(DH)</string>
+    <string name="title_sub">Starting Lineup(NO-DH)</string>
     <string-array name="positions_dh">
         <item>----</item>
         <item>(C)</item>
@@ -46,5 +47,5 @@
     <string name="back">Back</string>
     <string name="cancel">CANCEL</string>
     <string name="menu_of_dh">DH</string>
-    <string name="menu_of_not_dh">NOT DH</string>
+    <string name="menu_of_not_dh">NO-DH</string>
 </resources>
