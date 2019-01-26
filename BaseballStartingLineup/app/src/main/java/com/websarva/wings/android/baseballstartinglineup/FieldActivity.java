@@ -110,12 +110,14 @@ public class FieldActivity extends AppCompatActivity {
         int lengthOfText = textView.length();
 
         // 字数によって文字サイズ変更
-        if(lengthOfText < 17){
+        if(lengthOfText < 15){
+            textView.setTextSize(15);
+        } else if(lengthOfText < 17){
             textView.setTextSize(13);
-        } else if(lengthOfText < 19){
-            textView.setTextSize(10);
+        } else if(lengthOfText < 20){
+            textView.setTextSize(11);
         } else {
-            textView.setTextSize(8);
+            textView.setTextSize(9);
         }
 
     }
