@@ -17,6 +17,11 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+
 public class MainActivity extends AppCompatActivity {
 
     //選択した打順
@@ -52,11 +57,34 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isFirstTImeNormalDisplay;
 
+    // 広告周り
+    private InterstitialAd mInterstitialAd;
+    // インタースティシャルを表示させる頻度の設定
+    private int Interval = 5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        // 広告周り
+        MobileAds.initialize(this, "ca-app-pub-6298264304843789~3706409551");
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                // Load the next interstitial.
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+
+        });
 
 
 
@@ -285,6 +313,14 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("namesOfTop",nameIntent);
         intent.putExtra("isDh",isDh);
         startActivity(intent);
+
+        // 広告挟む
+        if (mInterstitialAd.isLoaded()) {
+
+
+
+            mInterstitialAd.show();
+        }
     }
 
     //オプションメニュー実装
