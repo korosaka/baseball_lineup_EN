@@ -22,6 +22,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     //選択した打順
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     // 広告周り
     private InterstitialAd mInterstitialAd;
     // インタースティシャルを表示させる頻度の設定
-    private int Interval = 5;
+    private int interval = 5;
 
 
     @Override
@@ -314,12 +316,14 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("isDh",isDh);
         startActivity(intent);
 
-        // 広告挟む
+        // 広告挟む(何回かに1回)
         if (mInterstitialAd.isLoaded()) {
 
-
-
-            mInterstitialAd.show();
+            Random random = new Random();
+            int randomNumber = random.nextInt(interval);
+            if(randomNumber == 0){
+                mInterstitialAd.show();
+            }
         }
     }
 
