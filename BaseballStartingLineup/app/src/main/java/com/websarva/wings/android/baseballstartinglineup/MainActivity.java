@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     private void readyInputtingName(int num, String position, String name) {
         spinner.setEnabled(true);
         //numbersは表示打順のためkを反映させない
-        String number = String.valueOf(num + 1) + "番";
+        String number = String.valueOf(num + 1);
         tvSelectNum.setText(number);
         //下記メソッド使用
         setSpinner(spinner, position);
