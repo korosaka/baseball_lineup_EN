@@ -1,14 +1,15 @@
 package com.websarva.wings.android.baseballstartinglineup;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-public class FieldActivity extends AppCompatActivity {
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
-    //戻るボタン
+public class FieldActivity extends AppCompatActivity {
     //各ポジションのテキスト
     private TextView position1;
     private TextView position2;
@@ -19,14 +20,36 @@ public class FieldActivity extends AppCompatActivity {
     private TextView position7;
     private TextView position8;
     private TextView position9;
-    private TextView positionDH;
+    private TextView[] dh = new TextView[6];
 
+    private int playerNumber = 0;
+    private int maxDh = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_field);
+        setAdsense();
+        bindLayout();
+        setPlayerCount();
+        hideDh();
+        setPlayers();
+    }
 
+    //戻るボタン
+    public void onClickBack(View view) {
+        finish();
+    }
+
+    private void setAdsense() {
+        //広告処理
+        MobileAds.initialize(this, "ca-app-pub-6298264304843789~9524433477");
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
+
+    private void bindLayout() {
         //ポジション紐付け
         position1 = findViewById(R.id.pitcher);
         position2 = findViewById(R.id.catcher);
@@ -37,94 +60,117 @@ public class FieldActivity extends AppCompatActivity {
         position7 = findViewById(R.id.left);
         position8 = findViewById(R.id.center);
         position9 = findViewById(R.id.right);
-        positionDH = findViewById(R.id.dh);
+        dh[0] = findViewById(R.id.dh1);
+        dh[1] = findViewById(R.id.dh2);
+        dh[2] = findViewById(R.id.dh3);
+        dh[3] = findViewById(R.id.dh4);
+        dh[4] = findViewById(R.id.dh5);
+        dh[5] = findViewById(R.id.dh6);
+    }
 
+    private void hideDh() {
+        for (int i = 5; i >= maxDh; i--) {
+            dh[i].setVisibility(View.INVISIBLE);
+        }
+    }
 
-        //インテントobject
-        Intent intent = getIntent();
-        //data取得
-        String positions[] = intent.getStringArrayExtra("positionsOfTop");
-        String names[] = intent.getStringArrayExtra("namesOfTop");
-        boolean isDh = intent.getBooleanExtra("isDh",false);
+    private void setPlayerCount() {
+        switch (CurrentOrderVersion.instance.getCurrentVersion()) {
+            case FixedWords.DEFAULT:
+                playerNumber = 9;
+                break;
+            case FixedWords.DH:
+                playerNumber = 10;
+                maxDh = 1;
+                break;
+            case FixedWords.ALL10:
+                playerNumber = 10;
+                maxDh = 1;
+                break;
+            case FixedWords.ALL11:
+                playerNumber = 11;
+                maxDh = 2;
+                break;
+            case FixedWords.ALL12:
+                playerNumber = 12;
+                maxDh = 3;
+                break;
+            case FixedWords.ALL13:
+                playerNumber = 13;
+                maxDh = 4;
+                break;
+            case FixedWords.ALL14:
+                playerNumber = 14;
+                maxDh = 5;
+                break;
+            case FixedWords.ALL15:
+                playerNumber = 15;
+                maxDh = 6;
+                break;
+        }
+    }
 
+    private void setPlayers() {
+        int dhCount = 0;
         //ある打順の守備位置dataがどこかのポジションと合致すれば、その打順登録名を守備フィールドに
-        for(int i = 1;i < 11;i++){
-            switch (positions[i]){
+        for (int i = 0; i < playerNumber; i++) {
+            switch (CachedPlayerPositionsInfo.instance.getAppropriatePosition(i)) {
                 case "(P)":
-                    if(isDh){
-                        position1.setText("[P] " + names[i]);
-                    } else {
-                        position1.setText("[" + i + "] " + names[i]);
-                    }
-                    changeTextSize(position1);
+                    if (CurrentOrderVersion.instance.getCurrentVersion() == FixedWords.DH)
+                        setText(position1, i, true);
+                    else
+                        setText(position1, i, false);
                     break;
                 case "(C)":
-                    position2.setText("[" + i + "] " + names[i]);
-                    changeTextSize(position2);
+                    setText(position2, i, false);
                     break;
                 case "(1B)":
-                    position3.setText("[" + i + "] " + names[i]);
-                    changeTextSize(position3);
+                    setText(position3, i, false);
                     break;
                 case "(2B)":
-                    position4.setText("[" + i + "] " + names[i]);
-                    changeTextSize(position4);
+                    setText(position4, i, false);
                     break;
                 case "(3B)":
-                    position5.setText("[" + i + "] " + names[i]);
-                    changeTextSize(position5);
+                    setText(position5, i, false);
                     break;
                 case "(SS)":
-                    position6.setText("[" + i + "] " + names[i]);
-                    changeTextSize(position6);
+                    setText(position6, i, false);
                     break;
                 case "(LF)":
-                    position7.setText("[" + i + "] " + names[i]);
-                    changeTextSize(position7);
+                    setText(position7, i, false);
                     break;
                 case "(CF)":
-                    position8.setText("[" + i + "] " + names[i]);
-                    changeTextSize(position8);
+                    setText(position8, i, false);
                     break;
                 case "(RF)":
-                    position9.setText("[" + i + "] " + names[i]);
-                    changeTextSize(position9);
+                    setText(position9, i, false);
                     break;
                 case "(DH)":
-                    positionDH.setText("[" + i + "] " + names[i]);
-                    changeTextSize(positionDH);
+                    if (dhCount >= maxDh) dhCount = 0;
+                    setText(dh[dhCount], i, false);
+                    dhCount++;
                     break;
                 default:
                     break;
             }
         }
-
-        if(!isDh){
-            positionDH.setText("");
-        }
-
     }
 
-    public void changeTextSize(TextView textView){
-        // 字数取得
-        int lengthOfText = textView.length();
+    private void setText(TextView textView, int num, boolean dhPitcher) {
+        String playerName = CachedPlayerNamesInfo.instance.getAppropriateName(num);
 
-        // 字数によって文字サイズ変更
-        if(lengthOfText < 15){
+        if (dhPitcher) textView.setText(playerName + " (P)");
+        else textView.setText(playerName + " (" + (num + 1) + ")");
+
+        if(playerName.length() < 15){
             textView.setTextSize(15);
-        } else if(lengthOfText < 17){
+        } else if(playerName.length() < 17){
             textView.setTextSize(13);
-        } else if(lengthOfText < 20){
+        } else if(playerName.length() < 20){
             textView.setTextSize(11);
         } else {
             textView.setTextSize(9);
         }
 
-    }
-
-
-    //戻るボタン
-    public void onClickBack(View view){
-        finish();
     }
 }

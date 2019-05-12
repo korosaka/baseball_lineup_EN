@@ -17,202 +17,255 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-import java.util.Random;
-
 public class MainActivity extends AppCompatActivity {
-
     //選択した打順
     TextView tvSelectNum;
     //入力欄
-    EditText etName;
+    public EditText etName;
     //登録ボタン
     Button record;
-    //キャンセルボタン
+    //    キャンセルボタン
     Button cancel;
+    // 入れ替えボタン
+    Button replace;
+    // 入れ替え中フラグ
+    Boolean isReplacing = false;
+    // １つ目入れ替え選択フラグ
+    Boolean isFirstReplaceClicked = false;
     //スタメンタイトル
     TextView title;
-    //各打順の数字配列
-    public static int numbers[] = new int[20];
     //グローバル変数i（データベースへの登録・検索で使う）
-    int i = 0;
-    //DH無し選択時に+10される
-    int k = 0;
+    int currentNum = 0;
     //スピナーオブジェクト
     Spinner spinner;
     //クリアボタン（現在上部に入力中のものを未入力状態に戻す（選択打順も））
     Button clear;
-    //各打順の名前,ポジション用配列(0は使わないので20個用意)
-    public static String[] namesOfTop = new String[20];
-    public static String[] positionsOfTop = new String[20];
 
+    int firstClicked = -1;
     private DatabaseUsing databaseUsing;
+    private LineupNormalFragment lineupNormalFragment;
+    private LineupDhFragment lineupDhFragment;
 
-    View view;
-
-    LineupDhFragment dhFragment;
-    LineupNormalFragment normalFragment;
-
-    boolean isFirstTImeNormalDisplay;
-
-    // 広告周り
-    private InterstitialAd mInterstitialAd;
-    // インタースティシャルを表示させる頻度の設定
-    private int interval = 5;
-
-
+    //ここからmain
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setAdsense();
 
+        databaseUsing = new DatabaseUsing(this);
+        for (int version = 1; version < 3; version++) {
+            databaseUsing.getPlayersInfo(version);
+        }
 
+        bindLayout();
+        setEdit();
+        setOrderFragment();
+    }
 
-        // 広告周り
-        MobileAds.initialize(this, "ca-app-pub-6298264304843789~3706409551");
+    private void setAdsense() {
+        //広告処理
+        MobileAds.initialize(this, "ca-app-pub-6298264304843789~9524433477");
+        //広告ビュー
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                // Load the next interstitial.
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            }
-
-        });
-
-
-
+    private void bindLayout() {
         //上記のグローバルフィールド紐付け
         tvSelectNum = findViewById(R.id.selectNum);
         etName = findViewById(R.id.etName);
         record = findViewById(R.id.record);
-        clear = findViewById(R.id.clear);
-        title = findViewById(R.id.title);
         cancel = findViewById(R.id.cancel);
-
-
-        //打順配列に打順番号入れる(1~19番)
-        for(int i = 1;i < 20;i++){
-            numbers[i] = i;
-        }
-        //スピナー紐付け
+        replace = findViewById(R.id.replace);
+        clear = findViewById(R.id.clear);
         spinner = findViewById(R.id.position);
-        spinner.setEnabled(false);
+        title = findViewById(R.id.title);
+    }
+
+    private void setEdit() {
         //EditText入力不可に
-        etName.setEnabled(false);
-        // キーボード出現コントロール
         etName.setFocusable(false);
         etName.setFocusableInTouchMode(false);
-        etName.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+        etName.setEnabled(false);
+        etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view,boolean flag){
+            public void onFocusChange(View view, boolean flag) {
 //                フォーカスを取得→キーボード表示
-                if(flag){
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(view,0);
+                if (flag) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(view, 0);
                 }
 //                フォーカス外れる→キーボード非表示
                 else {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
             }
         });
+    }
 
-
-//        TODO データベースから引っ張ってきて表示するメソッドorないなら空情報を配列に入れる
-        databaseUsing = new DatabaseUsing(this);
-        databaseUsing.getPlayersInfo(k);
-
-
-        // fragment作成してshow/hide
-        dhFragment = LineupDhFragment.newInstance(namesOfTop, positionsOfTop);
-
+    private void setOrderFragment() {
+        lineupNormalFragment = LineupNormalFragment.newInstance();
+        lineupDhFragment = LineupDhFragment.newInstance();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        transaction.add(R.id.lineup_container,dhFragment);
-        transaction.show(dhFragment);
+        transaction.add(R.id.lineup_container, lineupNormalFragment);
+        transaction.add(R.id.lineup_container, lineupDhFragment);
+        transaction.show(lineupNormalFragment);
+        transaction.hide(lineupDhFragment);
         transaction.commit();
-
-        isFirstTImeNormalDisplay = true;
-
     }
 
     //以下１〜９番の打順ボタン処理⬇
-    public void onClick1(View view){
+    public void onClick1(View view) {
+        commonMethod(0);
+    }
+
+    public void onClick2(View view) {
         commonMethod(1);
     }
-    public void onClick2(View view){
+
+    public void onClick3(View view) {
         commonMethod(2);
     }
-    public void onClick3(View view){
+
+    public void onClick4(View view) {
         commonMethod(3);
     }
-    public void onClick4(View view){
+
+    public void onClick5(View view) {
         commonMethod(4);
     }
-    public void onClick5(View view){
+
+    public void onClick6(View view) {
         commonMethod(5);
     }
-    public void onClick6(View view){
+
+    public void onClick7(View view) {
         commonMethod(6);
     }
-    public void onClick7(View view){
+
+    public void onClick8(View view) {
         commonMethod(7);
     }
-    public void onClick8(View view) {
+
+    public void onClick9(View view) {
         commonMethod(8);
     }
-    public void onClick9(View view){
+
+    public void onClickP(View view) {
         commonMethod(9);
     }
-    public void onClickP(View view){
-        commonMethod(10);
-    }
+
     //打順ボタン共通メソッド（打順・登録状態表示、EditText・登録/クリアボタンの有効化、データベース用の数字登録）
-    public void commonMethod(int j){
-        //下記メソッド使用
-        setSpinner(spinner, positionsOfTop[j + k]);
-        etName.setText(namesOfTop[j + k]);
-        if(etName.getText().toString().equals("-----")){
-            etName.setText("");
-        }
-        etName.setEnabled(true);
-        etName.setFocusable(true);
-        etName.setFocusableInTouchMode(true);
-        etName.requestFocus();
-        record.setEnabled(true);
-        clear.setEnabled(true);
-        cancel.setEnabled(true);
-
-        i = j;
-
-        // 投手選択時
-        if(j == 10){
-            tvSelectNum.setText("P");
-            spinner.setEnabled(false);
+    public void commonMethod(int j) {
+        // 入れ替え時のクリックと処理区別
+        if (isReplacing) {
+            replaceMethod(j);
         } else {
-            // 野手
-            tvSelectNum.setText(String.valueOf(j));
-            spinner.setEnabled(true);
+            // 通常時の打順選択
+            selectNum(j);
+        }
+    }
+
+    private void replaceMethod(int j) {
+        // 入れ替え時
+        if (!isFirstReplaceClicked) {
+            // 1つめ選択時
+            selectFirstReplacing(j);
+        } else {
+            // 2つめ選択時
+            if (j == firstClicked) {
+                // 同じボタンがクリックされた →　元に戻す
+                cancelFirstClick(j);
+            } else {
+                // 異なるボタン →入れ替え処理
+                // DB/Layout内で入れ替え
+                replacing2players(firstClicked, j);
+                cancelReplacing();
+                setLayoutDefault();
+            }
+        }
+    }
+
+    private void selectFirstReplacing(int num) {
+        changeButtonColor(num);
+        firstClicked = num;
+        isFirstReplaceClicked = true;
+    }
+
+    private void cancelFirstClick(int num) {
+        setButtonDefault(num);
+        isFirstReplaceClicked = false;
+        firstClicked = -1;
+    }
+
+    public void replacing2players(int firstSelected, int secondSelected) {
+
+        // 最初に選択した選手のところに後から選択した選手を上書き
+        databaseUsing.setDatabaseInfo(firstSelected, CachedPlayerNamesInfo.instance.getAppropriateName(secondSelected)
+                , CachedPlayerPositionsInfo.instance.getAppropriatePosition(secondSelected));
+
+        // 後に選択した選手の場所に最初の選手を登録
+        databaseUsing.setDatabaseInfo(secondSelected, CachedPlayerNamesInfo.instance.getAppropriateName(firstSelected)
+                , CachedPlayerPositionsInfo.instance.getAppropriatePosition(firstSelected));
+
+        // キャッシュデータもデータベースの内容に合わせる(入れ替え後のデータに更新する)
+        databaseUsing.getDatabaseInfo(CurrentOrderVersion.instance.getCurrentVersion(), firstSelected);
+        databaseUsing.getDatabaseInfo(CurrentOrderVersion.instance.getCurrentVersion(), secondSelected);
+
+        // TextViewも更新
+        changeText(firstSelected, secondSelected);
+    }
+
+    private void changeText(int firstSelected, int secondSelected) {
+        switch (CurrentOrderVersion.instance.getCurrentVersion()) {
+            case FixedWords.DEFAULT:
+                lineupNormalFragment.changeData(firstSelected, CachedPlayerNamesInfo.instance.getAppropriateName(firstSelected)
+                        , CachedPlayerPositionsInfo.instance.getAppropriatePosition(firstSelected));
+                lineupNormalFragment.changeData(secondSelected, CachedPlayerNamesInfo.instance.getAppropriateName(secondSelected)
+                        , CachedPlayerPositionsInfo.instance.getAppropriatePosition(secondSelected));
+                break;
+            case FixedWords.DH:
+                lineupDhFragment.changeData(firstSelected, CachedPlayerNamesInfo.instance.getAppropriateName(firstSelected)
+                        , CachedPlayerPositionsInfo.instance.getAppropriatePosition(firstSelected));
+                lineupDhFragment.changeData(secondSelected, CachedPlayerNamesInfo.instance.getAppropriateName(secondSelected)
+                        , CachedPlayerPositionsInfo.instance.getAppropriatePosition(secondSelected));
+                break;
+            case FixedWords.ALL10:
+                break;
+            case FixedWords.ALL11:
+                break;
+            case FixedWords.ALL12:
+                break;
+            case FixedWords.ALL13:
+                break;
+            case FixedWords.ALL14:
+                break;
+            case FixedWords.ALL15:
+                break;
         }
 
+    }
+
+    private void selectNum(int num) {
+
+        readyInputtingName(num, CachedPlayerPositionsInfo.instance.getAppropriatePosition(num)
+                , CachedPlayerNamesInfo.instance.getAppropriateName(num));
+        currentNum = num;
     }
 
     //文字列からスピナーをセットするメソッド（上記メソッドで使用）
-    public void setSpinner(Spinner spinner,String position){
+    private void setSpinner(Spinner spinner, String position) {
         SpinnerAdapter adapter = spinner.getAdapter();
         int index = 0;
-        for(int i = 0; i < adapter.getCount(); i++){
-            if(adapter.getItem(i).equals(position)){
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (adapter.getItem(i).equals(position)) {
                 index = i;
                 break;
             }
@@ -220,180 +273,226 @@ public class MainActivity extends AppCompatActivity {
         spinner.setSelection(index);
     }
 
-    // 登録ボタンクリック
-    public void onClickSave(View view){
+    private void readyInputtingName(int num, String position, String name) {
+        spinner.setEnabled(true);
+        //numbersは表示打順のためkを反映させない
+        String number = String.valueOf(num + 1) + "番";
+        tvSelectNum.setText(number);
+        //下記メソッド使用
+        setSpinner(spinner, position);
+        etName.setText(name);
+        if (etName.getText().toString().equals("-----")) etName.setText("");
+        etName.setEnabled(true);
+        etName.setFocusable(true);
+        etName.setFocusableInTouchMode(true);
+        etName.requestFocus();
+        record.setEnabled(true);
+        cancel.setEnabled(true);
+        clear.setEnabled(true);
+        replace.setEnabled(false);
+
+        // DH制の投手の場合のみ対応
+        if (CurrentOrderVersion.instance.getCurrentVersion() == FixedWords.DH && num == 9) {
+            tvSelectNum.setText("P");
+            setSpinner(spinner, "----");
+            spinner.setEnabled(false);
+        }
+    }
+
+    //登録ボタン押した処理
+    public void onClickSave(View view) {
         //入力文字列取得
         String playerName = etName.getText().toString();
-        if(playerName.equals("")){
-            playerName = "-----";
-        }
+        if (playerName.equals("")) playerName = "-----";
         //ポジション取得
         String position = (String) spinner.getSelectedItem();
-        if(i == 10){
-            position = "(P)";
+
+        databaseUsing.setDatabaseInfo(currentNum, playerName, position);
+
+        switch (CurrentOrderVersion.instance.getCurrentVersion()) {
+            //画面のメンバー表に反映（１〜９番まで）
+            case FixedWords.DEFAULT:
+                lineupNormalFragment.changeData(currentNum, playerName, position);
+                CachedPlayerNamesInfo.instance.setNameNormal(currentNum, playerName);
+                CachedPlayerPositionsInfo.instance.setPositionNormal(currentNum, position);
+                break;
+            case FixedWords.DH:
+                lineupDhFragment.changeData(currentNum, playerName, position);
+                CachedPlayerNamesInfo.instance.setNameDh(currentNum, playerName);
+                CachedPlayerPositionsInfo.instance.setPositionDh(currentNum, position);
+                break;
         }
 
-        // データベースに登録
-        databaseUsing.setPlayerInfo(i,position,playerName,k);
+        setLayoutDefault();
+    }
 
-        //それぞれ初期状態に戻
-        // TODO 要メソッド化（true時false時いちいち使っちゃってる）
+    private void setLayoutDefault() {
+        //それぞれ初期状態に戻す
         tvSelectNum.setText(getString(R.string.current_num));
         etName.setText("");
         spinner.setSelection(0);
-        spinner.setEnabled(false);
         etName.setFocusable(false);
         etName.setFocusableInTouchMode(false);
         etName.setEnabled(false);
         record.setEnabled(false);
         cancel.setEnabled(false);
         clear.setEnabled(false);
-
-        // レイアウトのオーダーに反映
-        if(k == 0){
-            dhFragment.textChange(i,position,playerName);
-        } else {
-            normalFragment.textChange(i,position,playerName);
-        }
-        // Mainのフィールド変数にも反映
-        namesOfTop[i + k] = playerName;
-        positionsOfTop[i + k] = position;
-
+        replace.setEnabled(true);
     }
 
-    // クリアーボタンクリック
-    public void onClickClear(View view){
+    //クリアボタン処理
+    public void onClickClear(View view) {
         //入力名をクリア状態に
         etName.setText("");
         //スピナー（守備位置）を未選択状態に戻す
         spinner.setSelection(0);
     }
-    // キャンセルボタンクリック
-    public void onClickCancel(View view){
+
+    //    キャンセルボタン処理
+    public void onClickCancel(View view) {
+
+        // 入れ替えボタンクリック時のキャンセルor入力中のキャンセル？
+        if (isReplacing) cancelReplacing();
         //それぞれ初期状態に戻す
-        tvSelectNum.setText(getString(R.string.current_num));
-        etName.setText("");
-        spinner.setSelection(0);
-        spinner.setEnabled(false);
-        etName.setFocusable(false);
-        etName.setFocusableInTouchMode(false);
-        etName.setEnabled(false);
-        record.setEnabled(false);
-        cancel.setEnabled(false);
-        clear.setEnabled(false);
+        setLayoutDefault();
     }
 
-    // フィールド表示
-    public void onClickField(View view){
+    // 入れ替えボタン処理
+    public void onClickReplace(View view) {
 
-        boolean isDh;
+        if (CurrentOrderVersion.instance.getCurrentVersion() == FixedWords.DH)
+            lineupDhFragment.setPitcherButtonEnable(false);
+        // 入れ替えクリックされているフラグ
+        isReplacing = true;
+        // 入れ替えボタンはenable(false)に
+        replace.setEnabled(false);
+        // キャンセルはできるように
+        cancel.setEnabled(true);
+        // タイトルが『２つボタンクリック』になる
+        title.setText(R.string.replace_title);
 
-        databaseUsing.getPlayersInfo(k);
-
-
-        //遷移先に送るデータ（各守備位置・名前）
-        String[] positionIntent = new String[11];
-        String[] nameIntent = new String[11];
-        //送るデータ（9人分）を抽出（正規orサブ）
-        for (int i = 1;i < 10;i++){
-            positionIntent[i] = positionsOfTop[i + k];
-            nameIntent[i] = namesOfTop[i + k];
-        }
-        // DH選択時は10人目に投手情報渡す
-        if(k == 0){
-            positionIntent[10] = positionsOfTop[10];
-            nameIntent[10] = namesOfTop[10];
-            isDh = true;
-        } else {
-            positionIntent[10] = "";
-            nameIntent[10] = "";
-            isDh = false;
-        }
-        //フィールド画面へ
-        Intent intent = new Intent(MainActivity.this,FieldActivity.class);
-        intent.putExtra("positionsOfTop",positionIntent);
-        intent.putExtra("namesOfTop",nameIntent);
-        intent.putExtra("isDh",isDh);
-        startActivity(intent);
-
-        // 広告挟む(何回かに1回)
-        if (mInterstitialAd.isLoaded()) {
-
-            Random random = new Random();
-            int randomNumber = random.nextInt(interval);
-            if(randomNumber == 0){
-                mInterstitialAd.show();
-            }
-        }
     }
 
-    //オプションメニュー実装
+    public void onClickField(View view) {
+        startActivity(new Intent(MainActivity.this, FieldActivity.class));
+
+        setLayoutDefault();
+        if (isReplacing) cancelReplacing();
+    }
+
+
+    //オプションメニュー追加
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         //メニューインフレター取得
         MenuInflater inflater = getMenuInflater();
         //オプションメニュー用.xmlファイルをインフレート（メニュー部品をJavaオブジェクトに）
-        inflater.inflate(R.menu.menu_options_list,menu);
+        inflater.inflate(R.menu.menu_options_list, menu);
         //親クラスの同名メソッドで返却
         return super.onCreateOptionsMenu(menu);
     }
 
+    //オプションメニューを選択した時の処理
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-
-        int itemId = item.getItemId();
-
-        if( (itemId == R.id.menuOptionChangeToDh && k == 0) || (itemId == R.id.menuOptionChangeToNormal && k == 10)){
-            // 今表示してるfragment選択なら何もしない
-        } else {
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-            String[] spinnerResource;
-
-            switch (itemId){
-
-                case R.id.menuOptionChangeToDh:
-                    k = 0;
-                    transaction.show(dhFragment);
-                    transaction.hide(normalFragment);
-                    spinnerResource = getResources().getStringArray(R.array.positions_dh);
-                    break;
-
-                default:
-                    k = 10;
-                    if(isFirstTImeNormalDisplay){
-                        databaseUsing.getPlayersInfo(k);
-                        normalFragment = LineupNormalFragment.newInstance(namesOfTop,positionsOfTop);
-                        transaction.add(R.id.lineup_container,normalFragment);
-                        isFirstTImeNormalDisplay = false;
-                    }
-                    transaction.show(normalFragment);
-                    transaction.hide(dhFragment);
-                    spinnerResource = getResources().getStringArray(R.array.positions_not_dh);
-                    break;
-            }
-            transaction.commit();
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,spinnerResource);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-
-            // TODO 要メソッド化
-            tvSelectNum.setText(getString(R.string.current_num));
-            etName.setText("");
-            spinner.setSelection(0);
-            spinner.setEnabled(false);
-            etName.setFocusable(false);
-            etName.setFocusableInTouchMode(false);
-            etName.setEnabled(false);
-            record.setEnabled(false);
-            cancel.setEnabled(false);
-            clear.setEnabled(false);
-
-            return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //IDのR値による処理分岐
+        switch (item.getItemId()) {
+            case R.id.oder:
+                showOrder(FixedWords.DEFAULT);
+                setSpinner(getResources().getStringArray(R.array.positions_not_dh));
+                break;
+            //DHの場合
+            case R.id.dh:
+                showOrder(FixedWords.DH);
+                setSpinner(getResources().getStringArray(R.array.positions_dh));
+                break;
         }
+        setLayoutDefault();
+        if (isReplacing) cancelReplacing();
 
+        //親クラス同名メソッドで戻り値返却
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * 入れ替え処理中ならリセット
+     */
+    private void cancelReplacing() {
+        if (isFirstReplaceClicked) cancelFirstClick(firstClicked);
+        isReplacing = false;
+        title.setText(R.string.title);
+        replace.setEnabled(true);
+        cancel.setEnabled(false);
+        if (CurrentOrderVersion.instance.getCurrentVersion() == FixedWords.DH)
+            lineupDhFragment.setPitcherButtonEnable(true);
+    }
+
+    private void changeButtonColor(int num) {
+        switch (CurrentOrderVersion.instance.getCurrentVersion()) {
+            case FixedWords.DEFAULT:
+                lineupNormalFragment.changeButtonColor(num);
+                break;
+            case FixedWords.DH:
+                lineupDhFragment.changeButtonColor(num);
+                break;
+            case FixedWords.ALL10:
+                break;
+            case FixedWords.ALL11:
+                break;
+            case FixedWords.ALL12:
+                break;
+            case FixedWords.ALL13:
+                break;
+            case FixedWords.ALL14:
+                break;
+            case FixedWords.ALL15:
+                break;
+        }
+    }
+
+    private void setButtonDefault(int num) {
+        switch (CurrentOrderVersion.instance.getCurrentVersion()) {
+            case FixedWords.DEFAULT:
+                lineupNormalFragment.setButtonDefault(num);
+                break;
+            case FixedWords.DH:
+                lineupDhFragment.setButtonDefault(num);
+                break;
+            case FixedWords.ALL10:
+                break;
+            case FixedWords.ALL11:
+                break;
+            case FixedWords.ALL12:
+                break;
+            case FixedWords.ALL13:
+                break;
+            case FixedWords.ALL14:
+                break;
+            case FixedWords.ALL15:
+                break;
+        }
+    }
+
+    private void showOrder(int orderVersion) {
+
+        CurrentOrderVersion.instance.setCurrentVersion(orderVersion);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        switch (orderVersion) {
+            case FixedWords.DEFAULT:
+                transaction.hide(lineupDhFragment);
+                transaction.show(lineupNormalFragment);
+                break;
+            case FixedWords.DH:
+                transaction.hide(lineupNormalFragment);
+                transaction.show(lineupDhFragment);
+                break;
+        }
+        transaction.commit();
+    }
+
+    private void setSpinner(String[] spinnerResource) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerResource);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+    }
 }
