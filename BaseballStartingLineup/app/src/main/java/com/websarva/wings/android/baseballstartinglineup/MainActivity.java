@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAdsense() {
         //広告処理
-        MobileAds.initialize(this, "ca-app-pub-6298264304843789~9524433477");
+        MobileAds.initialize(this, "ca-app-pub-6298264304843789~3706409551");
         //広告ビュー
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
